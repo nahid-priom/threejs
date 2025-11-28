@@ -1,6 +1,6 @@
 'use client';
 
-import { useRef, useState, useEffect } from 'react';
+import { useRef, useState, useEffect, useMemo } from 'react';
 import { useFrame, useThree } from '@react-three/fiber';
 import { Group, Mesh } from 'three';
 import * as THREE from 'three';
@@ -94,6 +94,24 @@ function OrbitingCard({ card, index, totalCards }: { card: typeof cardItems[0]; 
   const introScale = 0.8 + introProgress * 0.2;
   const introOpacity = introProgress;
 
+  // Create materials for text with opacity support
+  const titleMaterial = useMemo(
+    () =>
+      new THREE.MeshStandardMaterial({
+        transparent: true,
+        opacity: introOpacity,
+      }),
+    [introOpacity]
+  );
+  const subtitleMaterial = useMemo(
+    () =>
+      new THREE.MeshStandardMaterial({
+        transparent: true,
+        opacity: 0.8 * introOpacity,
+      }),
+    [introOpacity]
+  );
+
   return (
     <group
       ref={cardRef}
@@ -122,7 +140,7 @@ function OrbitingCard({ card, index, totalCards }: { card: typeof cardItems[0]; 
           anchorY="middle"
           outlineWidth={0.01}
           outlineColor="#000000"
-          opacity={introOpacity}
+          material={titleMaterial}
         >
           {card.title}
         </Text>
@@ -136,7 +154,7 @@ function OrbitingCard({ card, index, totalCards }: { card: typeof cardItems[0]; 
           color={card.accentColor}
           anchorX="center"
           anchorY="middle"
-          opacity={0.8 * introOpacity}
+          material={subtitleMaterial}
         >
           {card.subtitle}
         </Text>

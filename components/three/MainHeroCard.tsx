@@ -1,8 +1,8 @@
 'use client';
 
-import { useRef, useState, useEffect } from 'react';
+import { useRef, useState, useEffect, useMemo } from 'react';
 import { useFrame, useThree } from '@react-three/fiber';
-import { Mesh, Group } from 'three';
+import { Mesh, Group, MeshStandardMaterial } from 'three';
 import * as THREE from 'three';
 import { Text } from '@react-three/drei';
 import { cardItems } from '@/lib/catalogData';
@@ -64,6 +64,24 @@ function MainHeroCardMesh() {
   const introOpacity = introProgress;
   const introY = (1 - introProgress) * 0.3;
 
+  // Create materials for text with opacity support (created once, updated in useFrame)
+  const titleMaterial = useMemo(
+    () =>
+      new THREE.MeshStandardMaterial({
+        transparent: true,
+        opacity: introOpacity,
+      }),
+    [introOpacity]
+  );
+  const subtitleMaterial = useMemo(
+    () =>
+      new THREE.MeshStandardMaterial({
+        transparent: true,
+        opacity: 0.8 * introOpacity,
+      }),
+    [introOpacity]
+  );
+
   return (
     <group position={[0, introY, 2.5]}>
       {/* Main card plane with procedural gradient */}
@@ -87,7 +105,7 @@ function MainHeroCardMesh() {
           anchorY="middle"
           outlineWidth={0.02}
           outlineColor="#000000"
-          opacity={introOpacity}
+          material={titleMaterial}
         >
           {mainCard.title}
         </Text>
@@ -101,7 +119,7 @@ function MainHeroCardMesh() {
           color={mainCard.accentColor}
           anchorX="center"
           anchorY="middle"
-          opacity={0.8 * introOpacity}
+          material={subtitleMaterial}
         >
           {mainCard.subtitle}
         </Text>
