@@ -180,13 +180,13 @@ export default function OrbitCard({ item, isActive, position, rotation }: OrbitC
         />
       </mesh>
 
-      {/* Full content using Html for active card - positioned in front of card */}
+      {/* Full content using Html for active card - positioned on light accessible panel */}
       {isActive && (
         <Html
-          position={[0, 0, 0.05]}
+          position={[0, 0, 0.02]}
           transform
           occlude={false}
-          distanceFactor={isMobile ? 1.5 : 1.2}
+          distanceFactor={isMobile ? 1.2 : 1.1}
           style={{
             pointerEvents: 'none',
             width: '100%',
@@ -196,50 +196,48 @@ export default function OrbitCard({ item, isActive, position, rotation }: OrbitC
           zIndexRange={[1000, 0]}
           sprite={false}
         >
-          <div
-            className="rounded-2xl bg-black/70 px-4 py-3 md:px-5 md:py-4 text-xs md:text-sm text-white backdrop-blur-md shadow-2xl max-w-[260px] md:max-w-[340px] border border-white/10"
-            style={{
-              textShadow: '0 2px 12px rgba(0,0,0,0.95), 0 0 4px rgba(0,0,0,0.7)',
-              WebkitFontSmoothing: 'antialiased',
-              MozOsxFontSmoothing: 'grayscale',
-              boxShadow: `0 8px 32px rgba(0,0,0,0.8), 0 0 16px ${item.accentColor}30`,
-            }}
-          >
-            {/* Subtitle */}
-            <p className="text-[10px] md:text-[11px] uppercase tracking-[0.25em] opacity-70 mb-1.5 md:mb-2 font-medium">
-              {item.subtitle}
-            </p>
+          <div className="flex h-full w-full items-center justify-center">
+            <div className="w-[80%] max-w-[640px]">
+              <div 
+                className="rounded-2xl bg-slate-50/95 shadow-[0_18px_45px_rgba(15,23,42,0.45)] border border-slate-200 px-6 py-5 md:px-8 md:py-6 backdrop-blur-sm"
+                style={{
+                  WebkitFontSmoothing: 'antialiased',
+                  MozOsxFontSmoothing: 'grayscale',
+                  boxShadow: `0 18px 45px rgba(15,23,42,0.45), 0 0 20px ${item.accentColor}15`,
+                }}
+              >
+                {/* Subtitle */}
+                <p className="text-[11px] md:text-xs uppercase tracking-[0.25em] text-slate-600 mb-2 md:mb-3 font-medium">
+                  {item.subtitle}
+                </p>
 
-            {/* Title */}
-            <h3
-              className="text-base md:text-lg lg:text-xl font-semibold mb-1.5 md:mb-2 leading-tight"
-              style={{ 
-                color: item.accentColor,
-                textShadow: `0 0 20px ${item.accentColor}50, 0 2px 8px rgba(0,0,0,0.95)`,
-                fontWeight: 700,
-              }}
-            >
-              {item.title}
-            </h3>
-
-            {/* Description */}
-            <p className="text-[11px] md:text-xs opacity-85 line-clamp-3 mb-2 md:mb-3 leading-relaxed">
-              {item.description}
-            </p>
-
-            {/* Tags */}
-            <div className="flex flex-wrap gap-1 md:gap-1.5">
-              {item.tags.map((tag) => (
-                <span
-                  key={tag}
-                  className="rounded-full border border-white/25 bg-white/10 px-2 py-[2px] md:px-2.5 md:py-1 text-[10px] md:text-[11px] uppercase tracking-wide font-medium"
-                  style={{
-                    boxShadow: `0 2px 8px ${item.accentColor}25`,
+                {/* Title */}
+                <h3
+                  className="text-xl md:text-2xl font-semibold text-slate-900 mb-2 md:mb-3 leading-tight"
+                  style={{ 
+                    textShadow: `0 0 8px ${item.accentColor}30, 0 2px 4px rgba(0,0,0,0.1)`,
                   }}
                 >
-                  {tag}
-                </span>
-              ))}
+                  {item.title}
+                </h3>
+
+                {/* Description */}
+                <p className="text-xs md:text-sm text-slate-700 leading-relaxed mb-3 md:mb-4 max-w-[480px]">
+                  {item.description}
+                </p>
+
+                {/* Tags */}
+                <div className="flex flex-wrap gap-2">
+                  {item.tags.map((tag) => (
+                    <span
+                      key={tag}
+                      className="rounded-full border border-slate-300 bg-slate-100 px-3 py-[4px] md:py-1 text-[11px] md:text-xs font-medium text-slate-800 uppercase tracking-wide"
+                    >
+                      {tag}
+                    </span>
+                  ))}
+                </div>
+              </div>
             </div>
           </div>
         </Html>
