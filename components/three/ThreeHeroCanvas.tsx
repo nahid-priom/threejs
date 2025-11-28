@@ -1,15 +1,14 @@
 'use client';
 
 import { Canvas, useThree, useFrame } from '@react-three/fiber';
-import { Suspense, useEffect, useState } from 'react';
+import { Suspense, useEffect } from 'react';
 import SkeletonScene from './SkeletonScene';
-import OrbitingCards from './OrbitingCards';
-import MainHeroCard from './MainHeroCard';
 import ScrollRig from './ScrollRig';
 import ParticleField from './ParticleField';
+import OrbitCardRail from './OrbitCardRail';
 import { PerspectiveCamera, Environment } from '@react-three/drei';
-import { EffectComposer, Bloom } from '@react-three/postprocessing';
 import { useScrollStore } from '@/lib/store';
+import { catalogItems } from '@/lib/catalogData';
 
 /**
  * MouseParallaxRig - Handles mouse movement for subtle parallax effects
@@ -54,36 +53,11 @@ function ParallaxCamera() {
 }
 
 /**
- * PostProcessingEffects - Post-processing effects wrapper
- * Wrapped in Suspense and conditionally rendered to avoid initialization errors
+ * OrbitCardRailWrapper - Wrapper component to access scroll store in 3D context
  */
-function PostProcessingEffects() {
-  const { gl, scene, camera } = useThree();
-  const [ready, setReady] = useState(false);
-
-  useEffect(() => {
-    // Wait for renderer and scene to be fully initialized
-    if (gl && scene && camera) {
-      // Small delay to ensure everything is ready
-      const timer = setTimeout(() => {
-        setReady(true);
-      }, 100);
-      return () => clearTimeout(timer);
-    }
-  }, [gl, scene, camera]);
-
-  if (!ready) return null;
-
-  return (
-    <EffectComposer>
-      {/* Bloom for glowing edges and emissive materials */}
-      <Bloom
-        intensity={0.5}
-        luminanceThreshold={0.8}
-        luminanceSmoothing={0.9}
-      />
-    </EffectComposer>
-  );
+function OrbitCardRailWrapper() {
+  const { scrollProgress } = useScrollStore();
+  return <OrbitCardRail items={catalogItems} scrollProgress={scrollProgress} />;
 }
 
 export default function ThreeHeroCanvas() {
@@ -129,12 +103,10 @@ export default function ThreeHeroCanvas() {
           <Environment preset="night" />
         </Suspense>
         
-        {/* Main scene components - skeleton only, cards hidden */}
+        {/* Main scene components - skeleton with orbiting card rail */}
         <Suspense fallback={null}>
           <SkeletonScene />
-          {/* Cards hidden to simplify hero */}
-          {/* <MainHeroCard /> */}
-          {/* <OrbitingCards /> */}
+          <OrbitCardRailWrapper />
           <ParticleField />
         </Suspense>
         

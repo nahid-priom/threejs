@@ -4,8 +4,6 @@ import dynamic from 'next/dynamic';
 import Navbar from '@/components/ui/Navbar';
 import HeroOverlay from '@/components/ui/HeroOverlay';
 import CatalogSection from '@/components/sections/CatalogSection';
-import AboutSection from '@/components/sections/AboutSection';
-import CTASection from '@/components/sections/CTASection';
 
 // Lazy load the 3D canvas for better performance
 const ThreeHeroCanvas = dynamic(() => import('@/components/three/ThreeHeroCanvas'), {
@@ -29,12 +27,6 @@ export default function Home() {
 
       {/* Catalog Sections */}
       <CatalogSection />
-
-      {/* About Section */}
-      <AboutSection />
-
-      {/* CTA Section */}
-      <CTASection />
     </main>
   );
 }
